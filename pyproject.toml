@@ -1,0 +1,63 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ka-graph"
+version = "0.1.0"
+description = "LangGraph-compatible agent orchestration with message-native state, checkpointing, and KaTrace Studio."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+keywords = ["agents", "llm", "graph", "langgraph", "kaggle", "tracing"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Software Development :: Libraries :: Python Modules",
+]
+dependencies = [
+  "kaggle-benchmarks>=0.2.0",
+  "cloudpickle>=3.0.0",
+  "requests>=2.31.0",
+  "pillow>=10",
+  "ipython>=8",
+  "grandalf>=0.8",
+  "fastapi>=0.100.0",
+  "uvicorn>=0.22.0",
+  "sqlalchemy>=2.0.0",
+  "pydantic>=2.0.0",
+  "python-dotenv>=1.0.0"
+]
+
+[project.urls]
+Homepage = "https://github.com/anpc849/ka-graph"
+Repository = "https://github.com/anpc849/ka-graph"
+Documentation = "https://github.com/anpc849/ka-graph/tree/main/docs"
+Issues = "https://github.com/anpc849/ka-graph/issues"
+
+[project.scripts]
+kagraph-studio = "kagraph.studio:main"
+
+[project.optional-dependencies]
+dev = [
+  "build>=1.2.0",
+  "twine>=5.0.0",
+  "pytest>=8",
+]
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = [
+  "src",
+]

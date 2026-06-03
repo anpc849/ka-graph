@@ -1,0 +1,7 @@
+recursive-include src/kagraph/webapp *
+global-exclude __pycache__
+global-exclude *.py[cod]
+global-exclude *.tsbuildinfo
+global-exclude .next
+global-exclude node_modules
+global-exclude AGENTS.md

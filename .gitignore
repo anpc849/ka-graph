@@ -1,0 +1,47 @@
+# Environments
+.env
+.venv/
+venv/
+env/
+
+# Python caches
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+
+# Build output
+build/
+dist/
+*.egg-info/
+
+# Webapp & Studio
+.next/
+node_modules/
+*.tsbuildinfo
+webapp/backend/traces.db
+*.db
+*.sqlite
+*.sqlite3
+
+# Agent IDEs and workflows
+.vscode/
+.idea/
+.agent/
+up_to_github/
+AGENTS.md
+kagraph_example.ipynb
+notebook.ipynb
+.sisyphus/
+
+# Local references to ignore
+/reference/
+/kaggle-benchmark/
+/kaggle-benchmarks/
+/kbench_knowledge/
+/langchain/
+/langfuse/
+/langgraph/
+/tutorials/langgraph_implement/
