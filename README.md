@@ -1,6 +1,6 @@
 # KaGraph
 
-KaGraph is a LangGraph-compatible agent orchestration framework built on top of `kaggle_benchmarks` conversation primitives. It helps you build stateful, multi-node agent workflows with traceable execution, message-aware state updates, checkpointing, and a built-in web studio for inspecting graph behavior.
+KaGraph is a [LangGraph](https://github.com/langchain-ai/langgraph)-compatible agent orchestration framework built on top of [Kaggle Benchmarks](https://github.com/Kaggle/kaggle-benchmarks) conversation primitives. It helps you build stateful, multi-node agent workflows with traceable execution, message-aware state updates, checkpointing, and a built-in web studio for inspecting graph behavior.
 
 **If you find this project helpful and would like to support its development, consider buying me a coffee!**
 
@@ -100,3 +100,7 @@ Use the docs for API details and the tutorial notebooks for runnable workflows:
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+## Acknowledgements
+
+Special thanks to [Codex](https://openai.com/codex/) and [Antigravity](https://antigravity.google/) for helping accelerate the development of KaGraph. Their support made it easier to prototype, refine, and ship the framework faster. 😍
