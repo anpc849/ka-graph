@@ -29,7 +29,7 @@ Then fill in `MODEL_PROXY_API_KEY` and `MODEL_PROXY_URL`.
 ## Installation
 
 ```bash
-pip install ka-graph
+pip install kagraphx
 ```
 
 For local development from source:
