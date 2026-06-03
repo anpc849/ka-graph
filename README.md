@@ -6,6 +6,10 @@ KaGraph is a LangGraph-compatible agent orchestration framework built on top of 
 
 [![Buy Me A Coffee](https://img.shields.io/badge/Buy%20Me%20A%20Coffee-FFDD00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black)](https://buymeacoffee.com/huangan)
 
+[▶ Introduction to KaGraph](https://www.youtube.com/watch?v=uHcmUN9Tv4Y)
+
+[Example kbench task](https://www.kaggle.com/benchmarks/tasks/anhoangvo/kagraph-example-task)
+
 ## Features
 
 - **Native `kaggle_benchmarks` Integration**: Preserves message roles and objects directly without flattening context.
