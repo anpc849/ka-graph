@@ -97,11 +97,13 @@ kagraph-studio --mode localtunnel
 
 LocalTunnel mode uses a production Next.js frontend by default. This avoids dev-server HMR and chunk-loading failures through the tunnel. Local mode uses the dev frontend by default.
 
-Add `--verbose` to keep the cell attached and stream backend logs in real time:
+In local mode, add `--verbose` if you want the command to stay attached and stream `backend.log` in real time:
 
 ```bash
-kagraph-studio --mode localtunnel --verbose
+kagraph-studio --mode local --verbose
 ```
+
+In localtunnel mode, real-time log streaming is disabled so notebook cells return after startup. Use the Studio logs page or read `backend.log` for backend output.
 
 ### 1. Start the Backend
 

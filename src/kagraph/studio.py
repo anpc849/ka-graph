@@ -1,8 +1,6 @@
 import argparse
 import os
-import re
 import shutil
-import signal
 import socket
 import subprocess
 import sys
@@ -29,68 +27,6 @@ def is_tool_installed(name):
 def port_is_open(port, host=DEFAULT_STUDIO_HOST):
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         return s.connect_ex((host, port)) == 0
-
-
-def _collect_port_pids(port):
-    pids = set()
-    commands = [
-        ["lsof", "-ti", f":{port}"],
-        ["fuser", f"{port}/tcp"],
-        ["ss", "-ltnp"],
-        ["netstat", "-ltnp"],
-    ]
-    for command in commands:
-        if not is_tool_installed(command[0]):
-            continue
-        try:
-            result = subprocess.run(command, capture_output=True, text=True, timeout=5)
-        except Exception:
-            continue
-        if command[0] in {"lsof", "fuser"}:
-            for token in re.findall(r"\b\d+\b", result.stdout):
-                pids.add(int(token))
-            continue
-        output = f"{result.stdout}\n{result.stderr}"
-        for line in output.splitlines():
-            if f":{port} " not in line and f":{port}\t" not in line:
-                continue
-            for match in re.finditer(r"pid=(\d+)|/(\d+)", line):
-                pid = match.group(1) or match.group(2)
-                if pid:
-                    pids.add(int(pid))
-    pids.discard(os.getpid())
-    return sorted(pids)
-
-
-def _terminate_pids(pids, sig):
-    for pid in pids:
-        try:
-            os.kill(pid, sig)
-        except Exception:
-            pass
-
-
-def wait_for_port_closed(port, timeout=10, host=DEFAULT_STUDIO_HOST):
-    start = time.time()
-    while time.time() - start < timeout:
-        if not port_is_open(port, host):
-            return True
-        time.sleep(0.25)
-    return not port_is_open(port, host)
-
-
-def kill_port(port):
-    pids = _collect_port_pids(port)
-    if pids:
-        _terminate_pids(pids, signal.SIGTERM)
-        wait_for_port_closed(port, timeout=3)
-    if port_is_open(port):
-        pids = _collect_port_pids(port)
-        if pids:
-            _terminate_pids(pids, getattr(signal, "SIGKILL", signal.SIGTERM))
-            wait_for_port_closed(port, timeout=5)
-    if port_is_open(port):
-        print(f"Warning: port {port} is still in use by PIDs {_collect_port_pids(port)}")
 
 
 def wait_for_port(port, timeout=120, host=DEFAULT_STUDIO_HOST):
@@ -163,18 +99,16 @@ def main():
         frontend_mode = "production" if args.mode == "localtunnel" else "dev"
     print(f"Frontend mode: {frontend_mode}")
 
-    print(f"Cleaning up old processes on ports {DEFAULT_BACKEND_PORT} and {DEFAULT_FRONTEND_PORT}...")
-    kill_port(DEFAULT_BACKEND_PORT)
-    kill_port(DEFAULT_FRONTEND_PORT)
-    blocked_ports = [
+    in_use_ports = [
         port
         for port in (DEFAULT_BACKEND_PORT, DEFAULT_FRONTEND_PORT)
         if port_is_open(port)
     ]
-    if blocked_ports:
-        print(f"Could not free port(s): {blocked_ports}. Stop those processes or restart the notebook kernel, then run kagraph-studio again.")
-        return
-    time.sleep(1)
+    if in_use_ports:
+        print(
+            f"Warning: port(s) {in_use_ports} already appear to be in use. "
+            "Studio will still start; if startup fails, check backend.log and frontend.log."
+        )
 
     print("Checking system dependencies...")
     if not is_tool_installed("npm"):
@@ -363,8 +297,10 @@ def main():
     print("\n[DEBUG] Server Logs for Bad Gateway Troubleshooting:")
     print_tail(backend_log_path, 15)
     print_tail(frontend_log_path, 25)
-    if args.verbose:
+    if args.verbose and args.mode != "localtunnel":
         follow_file(backend_log_path)
+    elif args.verbose:
+        print("[VERBOSE] Real-time backend log streaming is disabled in localtunnel mode so notebook cells do not block.")
 
 
 if __name__ == "__main__":

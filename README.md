@@ -50,9 +50,6 @@ kagraph-studio --mode local
 
 # Kaggle notebook or remote environment
 !kagraph-studio --mode localtunnel
-
-# Optional: stream backend logs in the notebook output
-!kagraph-studio --mode localtunnel --verbose
 ```
 
 Open `http://127.0.0.1:3000` in local mode, or use the printed LocalTunnel URL in tunnel mode.
